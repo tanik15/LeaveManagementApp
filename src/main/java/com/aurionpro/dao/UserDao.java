@@ -64,20 +64,48 @@ public class UserDao {
 		List<LeaveManagementModel> leaves= new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"select * from leave_summary where status = 'Pending'");
+					"select * from user_leaves where status like'Pending'");
 			ResultSet result = preparedStatement.executeQuery();
 			while(result.next()) {
 				LeaveManagementModel leave = new LeaveManagementModel();
-				leave.setLeaveId(result.getInt(1));
+				leave.setUserName(result.getString(1));
 				leave.setUserId(result.getInt(2));
 				leave.setAppliedDate(result.getTimestamp(3));
 				leave.setFromDate(result.getDate(4));
 				leave.setToDate(result.getDate(5));
 				leave.setReason(result.getString(6));
 				leave.setStatus(result.getString(7));
+				leave.setUserDept(result.getString(8));
+				leave.setLeaveId(result.getInt(9));
 				leaves.add(leave);
 			}
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return leaves;
+	}
+	public List<LeaveManagementModel> getAllLeave(){
+		List<LeaveManagementModel> leaves= new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"select * from user_leaves");
+			ResultSet result = preparedStatement.executeQuery();
+			while(result.next()) {
+				LeaveManagementModel leave = new LeaveManagementModel();
+				leave.setUserName(result.getString(1));
+				leave.setUserId(result.getInt(2));
+				leave.setAppliedDate(result.getTimestamp(3));
+				leave.setFromDate(result.getDate(4));
+				leave.setToDate(result.getDate(5));
+				leave.setReason(result.getString(6));
+				leave.setStatus(result.getString(7));
+				leave.setUserDept(result.getString(8));
+				leave.setLeaveId(result.getInt(9));
+				leaves.add(leave);
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,11 +117,14 @@ public class UserDao {
 		
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"update leave_summary set status=? where user_id=?");
+					"update leave_summary set status=? where leave_id=?");
+			
 			preparedStatement.setString(1, leave.getStatus());
-			preparedStatement.setInt(2, leave.getUserId());
+			preparedStatement.setInt(2, leave.getLeaveId());
 			int update = preparedStatement.executeUpdate();
 			if(update>0) {
+				System.out.println("update successful");
+				
 				return true;
 			}
 

@@ -17,16 +17,16 @@ import com.aurionpro.model.UserModel;
 import com.aurionpro.service.UserService;
 
 /**
- * Servlet implementation class ViewLeaveController
+ * Servlet implementation class LeaveActionController
  */
-@WebServlet("/ViewLeaveController")
-public class ViewLeaveController extends HttpServlet {
+@WebServlet("/LeaveActionController")
+public class LeaveActionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ViewLeaveController() {
+    public LeaveActionController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,14 +35,18 @@ public class ViewLeaveController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		int userid = (int) session.getAttribute("userid");
-		UserModel user = new UserModel();
-		user.setUserId(userid);
-		List<LeaveManagementModel> leaves = UserService.getUserLeave(user);
+		if(request.getParameter("action")!=null) {
+			LeaveManagementModel leave= new LeaveManagementModel();
+			leave.setLeaveId(Integer.parseInt(request.getParameter("leaveId")));
+			leave.setStatus(request.getParameter("action"));
+			System.out.println(leave.getStatus());
+			UserService.updateLeave(leave);
+		}
+		
+		List<LeaveManagementModel> leaves = UserService.getPendingLeave();
 		Collections.reverse(leaves); 
 		request.setAttribute("leaves", leaves);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("viewUserLeave.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("ViewPendingLeaves.jsp");
 		dispatcher.forward(request, response);		
 	}
 

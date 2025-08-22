@@ -10,23 +10,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.aurionpro.model.LeaveManagementModel;
-import com.aurionpro.model.UserModel;
 import com.aurionpro.service.UserService;
 
 /**
- * Servlet implementation class ViewLeaveController
+ * Servlet implementation class allLeaveController
  */
-@WebServlet("/ViewLeaveController")
-public class ViewLeaveController extends HttpServlet {
+@WebServlet("/allLeaveController")
+public class allLeaveController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ViewLeaveController() {
+    public allLeaveController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,15 +33,12 @@ public class ViewLeaveController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		int userid = (int) session.getAttribute("userid");
-		UserModel user = new UserModel();
-		user.setUserId(userid);
-		List<LeaveManagementModel> leaves = UserService.getUserLeave(user);
+		
+		List<LeaveManagementModel> leaves = UserService.getAllLeave();
 		Collections.reverse(leaves); 
 		request.setAttribute("leaves", leaves);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("viewUserLeave.jsp");
-		dispatcher.forward(request, response);		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("viewAllLeaves.jsp");
+		dispatcher.forward(request, response);	
 	}
 
 	/**

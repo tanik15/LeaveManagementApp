@@ -43,6 +43,12 @@ body {
 .info-item strong {
 	color: #2c3e50;
 }
+
+.logout-button {
+  margin: 0 auto; /* Centers horizontally */
+  width: 50%;
+  text-align: center;
+}
 </style>
 
 </head>
@@ -51,7 +57,7 @@ body {
 	<%
 	if (session == null || session.getAttribute("userid") == null) {
 		response.sendRedirect("login.jsp");
-		return;	
+		return;
 	}
 	String email = request.getParameter("email");
 	String userid = request.getParameter("userid");
@@ -65,23 +71,55 @@ body {
 		<!-- User Information Card -->
 		<div>
 			<p class="info-item">
-				<strong>User ID:</strong>  ${userid}
+				<strong>User ID:</strong> ${userid}
 			</p>
 			<p class="info-item">
 				<strong>User Name:</strong> ${userName}
 			</p>
 			<p class="info-item">
-				<strong>Email:</strong>  ${email}
+				<strong>Email:</strong> ${email}
 			</p>
 			<p class="info-item">
-				<strong>Department:</strong>  ${userDept}
+				<strong>Department:</strong> ${userDept}
 			</p>
 			<p class="info-item">
-				<strong>Role:</strong>  ${role}
+				<strong>Role:</strong> ${role}
 			</p>
-			
-		</div>
 
+		</div>
+		
+		<%
+		if ("admin".equalsIgnoreCase(role)) {
+		%>
+		<!-- Logout Button -->
+		<div class="d-flex justify-content-between mt-4">
+			<!-- Apply Leave Button -->
+			<form action="LeaveActionController" method="get">
+				<button type="submit" class="btn btn-success btn-lg">View
+					Pending Leaves</button>
+			</form>
+
+			<!-- View Applied Leave Button -->
+			<form action="allLeaveController" method="get">
+				<button type="submit" class="btn btn-primary btn-lg">View
+					All Leave</button>
+			</form>
+
+
+		</div>
+		<br>
+		<div class="logout-button" >
+			<form action="LogoutController" method="get">
+				<button type="submit" class="btn btn-danger btn-lg">Logout</button>
+			</form>
+		</div>
+		<%
+		}
+		%>
+		
+		<%
+		if (!"admin".equalsIgnoreCase(role)) {
+		%>
 		<!-- Logout Button -->
 		<div class="d-flex justify-content-between mt-4">
 			<!-- Apply Leave Button -->
@@ -100,7 +138,10 @@ body {
 				<button type="submit" class="btn btn-danger btn-lg">Logout</button>
 			</form>
 		</div>
-
+		<%
+		}
+		%>
+		
 
 
 	</div>

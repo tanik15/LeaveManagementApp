@@ -12,8 +12,25 @@ public class LeaveManagementModel {
     private Date toDate;          // DATE
     private String reason;             // VARCHAR(200)
     private String status;             // VARCHAR(45) DEFAULT "Pending"
+    private String userName;
+    private String userDept;
+    public String getUserName() {
+		return userName;
+	}
 
-    // Default Constructor
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserDept() {
+		return userDept;
+	}
+
+	public void setUserDept(String userDept) {
+		this.userDept = userDept;
+	}
+
+	// Default Constructor
     public LeaveManagementModel() {
     }
 

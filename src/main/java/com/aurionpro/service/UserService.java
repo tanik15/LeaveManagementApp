@@ -23,6 +23,11 @@ public class UserService {
 		return userdao.getPendingLeave();
 	}
 	
+	public static List<LeaveManagementModel> getAllLeave() {
+		UserDao userdao= new UserDao();
+		return userdao.getAllLeave();
+	}
+	
 	public static List<LeaveManagementModel> getUserLeave(UserModel user) {
 		UserDao userdao= new UserDao();
 		return userdao.getUserLeave(user);
