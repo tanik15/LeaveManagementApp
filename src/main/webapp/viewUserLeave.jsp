@@ -44,10 +44,12 @@ body {
 </style>
 </head>
 <body>
-	<%if (session == null || session.getAttribute("userid") == null) {
+	<%
+	if (session == null || session.getAttribute("userid") == null) {
 		response.sendRedirect("login.jsp");
-		return;	
-	} %>
+		return;
+	}
+	%>
 	<div class="leave-table-container">
 		<div class="page-title">My Leave Applications</div>
 
@@ -64,7 +66,7 @@ body {
 			</thead>
 			<tbody>
 				<%
-				int num=0;
+				int num = 0;
 				// Assume you set "userLeaves" in request from your Servlet
 				List<LeaveManagementModel> userLeaves = (List<LeaveManagementModel>) request.getAttribute("leaves");
 				if (userLeaves != null && !userLeaves.isEmpty()) {
